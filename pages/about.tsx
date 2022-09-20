@@ -1,20 +1,21 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import ProTip from "../src/components/pro-tip";
 import Link from "../src/components/link";
 import Copyright from "../src/components/copyright";
 
-export default function Index() {
+export default function About() {
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Next.js example
         </Typography>
-        <Link href="/about" color="secondary">
-          Go to the about page
-        </Link>
+        <Button variant="contained" component={Link} noLinkStyle href="/">
+          Go to the main page
+        </Button>
         <ProTip />
         <Copyright />
       </Box>

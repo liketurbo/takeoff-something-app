@@ -1,9 +1,10 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ProTip from "../src/components/pro-tip";
-import Link from "../src/components/link";
-import Copyright from "../src/components/copyright";
+import ProTip from "../src/components/ProTip";
+import Copyright from "../src/components/Copyright";
+import Link from "next/link";
+import MuiLink from "@mui/material/Link";
 
 export default function Index() {
   return (
@@ -12,8 +13,8 @@ export default function Index() {
         <Typography variant="h4" component="h1" gutterBottom>
           Next.js example
         </Typography>
-        <Link href="/about" color="secondary">
-          Go to the about page
+        <Link href="/about" passHref>
+          <MuiLink color="secondary">Go to the about page</MuiLink>
         </Link>
         <ProTip />
         <Copyright />

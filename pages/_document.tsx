@@ -14,15 +14,17 @@ export default class MyDocument extends Document<{
     return (
       <Html lang="en">
         <Head>
-          {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="shortcut icon" href="/favicon.ico" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
-          <meta name="emotion-insertion-point" content="" />
-          {this.props.emotionStyleTags}
+          <>
+            {/* PWA primary color */}
+            <meta name="theme-color" content={theme.palette.primary.main} />
+            <link rel="shortcut icon" href="/favicon.ico" />
+            <link
+              rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            />
+            <meta name="emotion-insertion-point" content="" />
+            {this.props.emotionStyleTags}
+          </>
         </Head>
         <body>
           <Main />
@@ -69,7 +71,12 @@ MyDocument.getInitialProps = async (ctx) => {
     originalRenderPage({
       enhanceApp: (App: AppType) =>
         function EnhanceApp(props) {
-          return <App emotionCache={cache} {...props} />;
+          return (
+            <App
+              {...props}
+              pageProps={{ ...props.pageProps, emotionCache: cache }}
+            />
+          );
         },
     });
 

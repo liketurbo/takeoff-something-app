@@ -10,10 +10,10 @@ import { AppProps } from "next/app";
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-export default function MyApp(
-  props: AppProps & { emotionCache: EmotionCache }
-) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+export default function MyApp(props: AppProps<{ emotionCache: EmotionCache }>) {
+  const { Component, pageProps } = props;
+
+  const { emotionCache = clientSideEmotionCache, ...restPageProps } = pageProps;
 
   return (
     <CacheProvider value={emotionCache}>
@@ -23,7 +23,7 @@ export default function MyApp(
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <Component {...restPageProps} />
       </ThemeProvider>
     </CacheProvider>
   );

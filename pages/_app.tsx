@@ -7,11 +7,14 @@ import theme from "../src/theme";
 import createEmotionCache from "../src/create-emotion-cache";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-export default function MyApp(props: AppProps<{ emotionCache: EmotionCache }>) {
+export default function MyApp(props: AppProps<Props>) {
   const { Component, pageProps } = props;
 
   const {
@@ -27,11 +30,15 @@ export default function MyApp(props: AppProps<{ emotionCache: EmotionCache }>) {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Component {...restPageProps} />
         </ThemeProvider>
       </CacheProvider>
     </SessionProvider>
   );
+}
+
+interface Props {
+  emotionCache?: EmotionCache;
+  session: Awaited<ReturnType<typeof unstable_getServerSession>>;
 }

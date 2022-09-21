@@ -1,12 +1,13 @@
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { getCsrfToken } from "next-auth/react";
-import { GetServerSidePropsContext } from "next";
-import Avatar from "@mui/material/Avatar";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { GetServerSidePropsContext } from "next";
+import { getCsrfToken } from "next-auth/react";
+
 import Copyright from "../src/components/Copyright";
 import Header from "../src/components/Header";
 

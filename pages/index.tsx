@@ -1,14 +1,15 @@
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Copyright from "../src/components/Copyright";
-import Link from "next/link";
+import Container from "@mui/material/Container";
 import MuiLink from "@mui/material/Link";
-import { useSession } from "next-auth/react";
+import Typography from "@mui/material/Typography";
 import { GetServerSidePropsContext } from "next";
+import Link from "next/link";
 import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { useSession } from "next-auth/react";
+
+import Copyright from "../src/components/Copyright";
 import Header from "../src/components/Header";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 export default function Index() {
   const { data: session } = useSession();

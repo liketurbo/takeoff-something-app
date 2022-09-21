@@ -1,11 +1,11 @@
-import * as React from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
 import createEmotionServer, {
   EmotionCriticalToChunks,
 } from "@emotion/server/create-instance";
-import theme from "../src/theme";
-import createEmotionCache from "../src/create-emotion-cache";
 import { AppType } from "next/app";
+import Document, { Head, Html, Main, NextScript } from "next/document";
+
+import createEmotionCache from "../src/create-emotion-cache";
+import theme from "../src/theme";
 
 export default class MyDocument extends Document<{
   emotionStyleTags: EmotionCriticalToChunks;

@@ -1,7 +1,6 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ProTip from "../src/components/ProTip";
 import Copyright from "../src/components/Copyright";
 import Link from "next/link";
 import MuiLink from "@mui/material/Link";
@@ -28,7 +27,6 @@ export default function Index() {
           <Typography>
             {session ? `Hello ${session.user?.name}` : "You are not signed in"}
           </Typography>
-          <ProTip />
           <Copyright />
         </Box>
       </Container>

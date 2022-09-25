@@ -6,6 +6,7 @@
 - [TypeScript](https://www.typescriptlang.org/) - For type safety and it's a requirement
 - [MUI](https://mui.com/) - Ready to use components
 - [Next-Auth](https://next-auth.js.org/) - Authentication
+- [React Hook Form](https://react-hook-form.com/) - Form handling
 
 ## Requirements
 

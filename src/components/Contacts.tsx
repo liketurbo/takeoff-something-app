@@ -9,12 +9,13 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
+import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { cloneElement } from "react";
 
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { contactsSelector, removeContact } from "../store";
+import { contactsSelector, removeContact } from "../reducers/contacts";
+import AddContact from "./AddContact";
 
 export default function Contacts() {
   const dispatch = useAppDispatch();
@@ -23,9 +24,17 @@ export default function Contacts() {
   return (
     <Grid container spacing={2} justifyContent="center">
       <Grid item xs={12} md={10}>
-        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-          Contacts
-        </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ mt: 4, mb: 2 }}
+        >
+          <Typography variant="h6" component="div">
+            Contacts
+          </Typography>
+          <AddContact />
+        </Stack>
         <List>
           {contacts.map((contact) => (
             <ListItem key={contact.id}>

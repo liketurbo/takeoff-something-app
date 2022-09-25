@@ -7,18 +7,45 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
-import { useCallback } from "react";
+import { set } from "immer/dist/internal";
+import { setRevalidateHeaders } from "next/dist/server/send-payload";
+import { useCallback, useEffect, useMemo } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { addContact, updateContact } from "../reducers/contacts";
+import {
+  addContact,
+  contactsSelector,
+  updateContact,
+} from "../reducers/contacts";
 import { closeDialog, dialogSelector, openDialog } from "../reducers/dialog";
 
 export default function AddContact() {
   const dispatch = useAppDispatch();
+
+  const contacts = useAppSelector(contactsSelector);
   const { contactId, open } = useAppSelector(dialogSelector);
 
-  const { register, handleSubmit: handleSubmitForm, reset } = useForm();
+  const contact = useMemo(() => {
+    if (contactId) {
+      return contacts.find((contact) => contact.id === contactId);
+    }
+  }, [contactId, contacts]);
+
+  const {
+    register,
+    handleSubmit: handleSubmitForm,
+    reset,
+    setValue,
+  } = useForm();
+
+  useEffect(() => {
+    if (contact) {
+      setValue("name", contact.name);
+    } else {
+      setValue("name", "");
+    }
+  }, [contact, setValue]);
 
   const handleOpen = useCallback(() => {
     dispatch(openDialog({ contactId: null }));
@@ -52,7 +79,7 @@ export default function AddContact() {
         </IconButton>
       </Tooltip>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Contact</DialogTitle>
+        <DialogTitle>{contact ? "Update" : "Add"}&nbsp;Contact</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmitForm(handleSubmit)}>
             <TextField
@@ -67,7 +94,7 @@ export default function AddContact() {
             />
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Add</Button>
+              <Button type="submit">{contact ? "Update" : "Add"}</Button>
             </DialogActions>
           </form>
         </DialogContent>

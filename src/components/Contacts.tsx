@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { contactsSelector, removeContact } from "../reducers/contacts";
+import { openDialog } from "../reducers/dialog";
 import ContactDialog from "./ContactDialog";
 
 export default function Contacts() {
@@ -49,10 +50,7 @@ export default function Contacts() {
                   <IconButton
                     aria-label="edit"
                     onClick={() => {
-                      dispatch({
-                        type: "contacts/editContact",
-                        payload: contact,
-                      });
+                      dispatch(openDialog({ contactId: contact.id }));
                     }}
                   >
                     <EditIcon />

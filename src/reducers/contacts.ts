@@ -6,18 +6,18 @@ const contactsSlice = createSlice({
   name: "contacts",
   initialState: [
     {
-      id: 0,
+      id: Math.random().toString(36).slice(2),
       name: "John Doe",
     },
     {
-      id: 1,
+      id: Math.random().toString(36).slice(2),
       name: "Jane Doe",
     },
   ] as Contact[],
   reducers: {
     add: (state, action: PayloadAction<NewContact>) => {
       const contact = {
-        id: state.length + 1,
+        id: Math.random().toString(36).slice(2),
         ...action.payload,
       };
       state.push(contact);
@@ -64,4 +64,4 @@ export type Contact = {
   name: string;
 };
 
-export type ContactId = number;
+export type ContactId = string;

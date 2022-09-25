@@ -5,11 +5,12 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { unstable_getServerSession } from "next-auth/next";
 import { SessionProvider } from "next-auth/react";
+import { Provider } from "react-redux";
 
 import createEmotionCache from "../src/create-emotion-cache";
+import { store } from "../src/store";
 import theme from "../src/theme";
 
-// Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props: AppProps<Props>) {
@@ -22,17 +23,22 @@ export default function MyApp(props: AppProps<Props>) {
   } = pageProps;
 
   return (
-    <SessionProvider session={session}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...restPageProps} />
-        </ThemeProvider>
-      </CacheProvider>
-    </SessionProvider>
+    <Provider store={store}>
+      <SessionProvider session={session}>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <meta
+              name="viewport"
+              content="initial-scale=1, width=device-width"
+            />
+          </Head>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Component {...restPageProps} />
+          </ThemeProvider>
+        </CacheProvider>
+      </SessionProvider>
+    </Provider>
   );
 }
 

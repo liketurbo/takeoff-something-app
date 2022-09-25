@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { contactsSelector, removeContact } from "../reducers/contacts";
-import AddContact from "./AddContact";
+import ContactDialog from "./ContactDialog";
 
 export default function Contacts() {
   const dispatch = useAppDispatch();
@@ -33,7 +33,7 @@ export default function Contacts() {
           <Typography variant="h6" component="div">
             Contacts
           </Typography>
-          <AddContact />
+          <ContactDialog />
         </Stack>
         <List>
           {contacts.map((contact) => (

@@ -4,7 +4,7 @@ import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth/next";
 import { useSession } from "next-auth/react";
 
-import AddContact from "../src/components/AddContact";
+import AddContact from "../src/components/ContactDialog";
 import Contacts from "../src/components/Contacts";
 import Copyright from "../src/components/Copyright";
 import Header from "../src/components/Header";

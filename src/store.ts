@@ -2,16 +2,23 @@ import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const contactsSlice = createSlice({
   name: "contacts",
-  initialState: {
-    contacts: [] as Contact[],
-  },
+  initialState: [
+    {
+      id: 0,
+      name: "John Doe",
+    },
+    {
+      id: 1,
+      name: "Jane Doe",
+    },
+  ] as Contact[],
   reducers: {
     add: (state, action: PayloadAction<NewContact>) => {
       const contact = {
-        id: state.contacts.length + 1,
+        id: state.length + 1,
         ...action.payload,
       };
-      state.contacts.push(contact);
+      state.push(contact);
     },
     update: (
       state,
@@ -21,15 +28,17 @@ const contactsSlice = createSlice({
       }>
     ) => {
       const { id, newData } = action.payload;
-      const contact = state.contacts.find((contact) => contact.id === id);
+      const contact = state.find((contact) => contact.id === id);
       if (contact) {
         contact.name = newData.name;
       }
     },
     remove: (state, action: PayloadAction<{ id: ContactId }>) => {
-      state.contacts = state.contacts.filter(
-        (contact) => contact.id !== action.payload.id
-      );
+      const { id } = action.payload;
+      const index = state.findIndex((contact) => contact.id === id);
+      if (index !== -1) {
+        state.splice(index, 1);
+      }
     },
   },
 });
@@ -45,6 +54,8 @@ export const {
   update: updateContact,
   remove: removeContact,
 } = contactsSlice.actions;
+
+export const contactsSelector = (state: AppState) => state.contacts;
 
 export type AppState = ReturnType<typeof store.getState>;
 

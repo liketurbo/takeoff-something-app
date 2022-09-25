@@ -13,15 +13,13 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { cloneElement } from "react";
 
-function generate(element: React.ReactElement) {
-  return [0, 1, 2].map((value) =>
-    cloneElement(element, {
-      key: value,
-    })
-  );
-}
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { contactsSelector, removeContact } from "../store";
 
 export default function Contacts() {
+  const dispatch = useAppDispatch();
+  const contacts = useAppSelector(contactsSelector);
+
   return (
     <Grid container spacing={2} justifyContent="center">
       <Grid item xs={12} md={10}>
@@ -29,31 +27,41 @@ export default function Contacts() {
           Contacts
         </Typography>
         <List>
-          {generate(
-            <ListItem
-              secondaryAction={
-                <Box sx={{ display: "flex", gap: 2 }}>
-                  <Tooltip title="Edit">
-                    <IconButton edge="end" aria-label="delete">
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete">
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              }
-            >
+          {contacts.map((contact) => (
+            <ListItem key={contact.id}>
               <ListItemAvatar>
                 <Avatar>
                   <AccountIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Single-line item" />
+              <ListItemText primary={contact.name} />
+              <Box sx={{ display: "flex" }}>
+                <Tooltip title="Edit">
+                  <IconButton
+                    aria-label="edit"
+                    onClick={() => {
+                      dispatch({
+                        type: "contacts/editContact",
+                        payload: contact,
+                      });
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      dispatch(removeContact({ id: contact.id }));
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
             </ListItem>
-          )}
+          ))}
         </List>
       </Grid>
     </Grid>

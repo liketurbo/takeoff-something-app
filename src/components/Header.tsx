@@ -10,10 +10,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { MouseEvent, useCallback, useState } from "react";
 
 export default function Header() {
+  const router = useRouter();
+
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = useCallback(
@@ -27,10 +30,11 @@ export default function Header() {
     setAnchorElUser(null);
   }, [setAnchorElUser]);
 
-  const handleLogout = useCallback(() => {
-    signOut({ callbackUrl: "/signin" });
+  const handleLogout = useCallback(async () => {
+    await signOut({ redirect: false });
     handleCloseUserMenu();
-  }, [handleCloseUserMenu]);
+    router.push("/signin");
+  }, [handleCloseUserMenu, router]);
 
   return (
     <AppBar position="static">

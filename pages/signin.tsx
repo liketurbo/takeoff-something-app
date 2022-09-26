@@ -6,12 +6,35 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { GetServerSidePropsContext } from "next";
-import { getCsrfToken } from "next-auth/react";
+import { useRouter } from "next/router";
+import { unstable_getServerSession } from "next-auth";
+import { signIn } from "next-auth/react";
+import { useCallback } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 
 import Copyright from "../src/components/Copyright";
 import Header from "../src/components/Header";
+import { authOptions } from "./api/auth/[...nextauth]";
 
-export default function SignIn({ csrfToken }: Props) {
+export default function SignIn() {
+  const { register, handleSubmit: handleSubmitForm } = useForm();
+  const router = useRouter();
+
+  const handleSubmit = useCallback(
+    async (data: FieldValues) => {
+      const res = await signIn("credentials", {
+        redirect: false,
+        username: data.username,
+        password: data.password,
+      });
+
+      if (res?.ok) {
+        router.push("/");
+      }
+    },
+    [router]
+  );
+
   return (
     <>
       <Header />
@@ -32,30 +55,27 @@ export default function SignIn({ csrfToken }: Props) {
           </Typography>
           <Box
             component="form"
-            noValidate
             sx={{ mt: 1 }}
-            method="post"
-            action="/api/auth/callback/credentials"
+            onSubmit={handleSubmitForm(handleSubmit)}
           >
-            <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
             <TextField
               margin="normal"
               required
               fullWidth
               id="username"
               label="Username"
-              name="username"
               autoFocus
+              {...register("username")}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
+              {...register("password")}
             />
             <Button
               type="submit"
@@ -73,14 +93,23 @@ export default function SignIn({ csrfToken }: Props) {
   );
 }
 
-interface Props {
-  csrfToken: string;
-}
-
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
+    props: {},
   };
 }

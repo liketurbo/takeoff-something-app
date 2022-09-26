@@ -10,29 +10,27 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { MouseEvent, useState } from "react";
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { signOut } from "next-auth/react";
+import { MouseEvent, useCallback, useState } from "react";
 
 export default function Header() {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  const handleOpenUserMenu = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      setAnchorElUser(event.currentTarget);
+    },
+    [setAnchorElUser]
+  );
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = useCallback(() => {
     setAnchorElUser(null);
-  };
+  }, [setAnchorElUser]);
+
+  const handleLogout = useCallback(() => {
+    signOut({ callbackUrl: "/signin" });
+    handleCloseUserMenu();
+  }, [handleCloseUserMenu]);
 
   return (
     <AppBar position="static">
@@ -82,11 +80,9 @@ export default function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

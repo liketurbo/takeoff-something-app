@@ -17,6 +17,10 @@
 ```bash
 npm install
 
+# Create environment variables file
+echo "NEXTAUTH_URL=http://localhost:3000" >> .env.local
+echo "NEXTAUTH_SECRET=secret" >> .env.local
+
 # Run the development server:
 npm run dev
 
@@ -24,3 +28,8 @@ npm run dev
 npm run build
 npm run start
 ```
+
+## FAQ
+
+- **Why Next.js?** - I've been using Next.js for a while and I'm familiar with it, but for this project I could have used Create React App as well.
+- **How to login?** - For now I hardcoded `jsmith:secret` as only valid credentials.
